@@ -4,6 +4,7 @@
  * Description: A ticket management system built with React
  * Version: 4.0
  * Author: Hervé RASOLOFOARIJAONA
+ * Author URI: https://github.com/HerveRasolofoarijaona/ticket_wp_sc
  */
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
