@@ -127,10 +127,13 @@ function display_customer_id_function() {
 
         $customer_id = get_user_meta($user_id, 'sc_customer_ids', true); // Retrieve customer ID
 
-        if ($customer_id) {
-            return "Your Customer ID is: " . esc_html($customer_id);
+        $values = array_values($customer_id);
+        $firstValue = $values[0];
+
+        if ($customer_id) { 
+            return "Your Customer ID is: ".$firstValue;
         } else {
-            return "No Customer ID found for your account  and your id is ". esc_html($user_id)." and the user meta ".get_user_meta($user_id);
+            return "No Customer ID found for your account";
         }
     } else {
         return "You need to be logged in to view your Customer ID.";
