@@ -130,14 +130,64 @@ function display_customer_id_function() {
         $values = array_values($customer_id);
         $firstValue = $values[0];
 
+        $product_id ='1d19efd3-ff32-40e4-80d9-c97421974f16';
+
+        $authorization_token ='st_ZzwcuEa23mFZbMRPTX4EjMqp';
+
+        $subscriptions = fetch_surecart_subscription_data($firstValue,$product_id,$authorization_token);
+
+
+        if ($subscriptions) {
+            echo '<pre>';
+            print_r($subscriptions[data][0]);
+            echo '</pre>';
+        } else {
+            echo 'Aucune donnée disponible ou erreur lors de la requête.';
+        }
+
+        /*
+
         if ($customer_id) { 
             return "Your Customer ID is: ".$firstValue;
         } else {
             return "No Customer ID found for your account";
         }
+            
+        */
     } else {
         return "You need to be logged in to view your Customer ID.";
     }
 }
 
 // ref => https://developer.surecart.com/reference/retrieve_customer
+
+function fetch_surecart_subscription_data($customer_id,$product_id,$authorization_token) {
+    // L'URL de l'API
+    $url = 'https://api.surecart.com/v1/subscriptions?customer_ids[]='.$customer_id.'&product_ids[]='.$product_id;
+
+    // Les headers pour la requête
+    $args = array(
+        'headers' => array(
+            'Authorization' => $authorization_token,
+        ),
+    );
+
+    // Effectuer la requête GET
+    $response = wp_remote_get($url, $args);
+
+    // Vérifier si la requête a réussi
+    if (is_wp_error($response)) {
+        // Gestion des erreurs
+        error_log('Erreur lors de la requête SureCart : ' . $response->get_error_message());
+        return null;
+    }
+
+    // Récupérer le corps de la réponse
+    $data = wp_remote_retrieve_body($response);
+
+    // Décoder le JSON en tableau PHP
+    $subscriptions = json_decode($data, true);
+
+    // Retourner ou utiliser les données
+    return $subscriptions;
+}
