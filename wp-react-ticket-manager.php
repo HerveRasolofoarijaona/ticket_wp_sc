@@ -136,10 +136,9 @@ function display_customer_id_function() {
 
         $subscriptions = fetch_surecart_subscription_data($firstValue,$product_id,$authorization_token);
 
-
         if ($subscriptions) {
             echo '<pre>';
-            print_r($subscriptions[data][0]);
+            print_r($subscriptions['data'][0]);
             echo '</pre>';
         } else {
             echo 'Aucune donnée disponible ou erreur lors de la requête.';
